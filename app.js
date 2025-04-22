@@ -8,17 +8,18 @@ app.use(express.json())
 app.use(express.urlencoded({extended: true}))
 app.use(cors())
 
-app.post('/cadastro', async (req, res) => {
+app.post('/criarconta', async (req, res) => {
     try {
       const { email, senha } = req.body;
+
       const hash = await CriarHash(senha, 10);
 
       // Verifica se o email já existe
-      const verificacao = await sql`SELECT id FROM usuarios WHERE email = ${email}`;
-      if (verificacao.length == 0) {
-        return res.status(401).json('Email já cadastrado');
+      const tentativa = await sql`SELECT usuario_id FROM usuarios WHERE email = ${email}`;
+      if (tentativa.length > 0) {
+        return res.status(409).json('Email já cadastrado');
       }
- 
+      
       // Insere o novo usuário
       await sql`
         INSERT INTO usuarios (email, senha)

@@ -1,5 +1,5 @@
 import postgres from "postgres";
 
-const sql = postgres('postgres://root:root@localhost/Isabelle');
+const sql = postgres('postgres://root:root@192.168.1.15/Isabelle');
 
 export default sql;
